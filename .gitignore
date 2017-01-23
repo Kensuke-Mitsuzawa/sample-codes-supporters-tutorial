@@ -88,3 +88,6 @@ ENV/
 # Rope project settings
 .ropeproject
 .idea/
+
+sample_scripts/wikipedia_data/wikipedia-full.json
+sample_scripts/wikipedia_data/wikipedia-summary.json

@@ -14,7 +14,8 @@ install_requires = [
     'JapaneseTokenizer',
     'wikipedia',
     'sqlitedict',
-    'DocumentFeatureSelection'
+    'DocumentFeatureSelection',
+    'tqdm'
 ]
 
 dependency_links = []
