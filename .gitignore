@@ -91,3 +91,4 @@ ENV/
 
 sample_scripts/wikipedia_data/wikipedia-full.json
 sample_scripts/wikipedia_data/wikipedia-summary.json
+sample_scripts/wikipedia_data/wikipedia-evaluation-full.json

@@ -26,6 +26,8 @@ def tokenize_text(input_text:str,
     """
     ### 形態素分割;tokenize() -> 品詞フィルタリング;filter() -> List[str]に変換;convert_list_object()
     return tokenizer_obj.tokenize(input_text).filter(pos_condition=pos_condition).convert_list_object()
+    ### 原型(辞書系)に変換せず、活用された状態のまま、欲しい場合は is_surface=True のフラグを与える
+    #return tokenizer_obj.tokenize(input_text, is_surface=True).filter(pos_condition=pos_condition).convert_list_object()
 
 
 def aggregate_words(seq_tokenized:List[List[str]])->collections.Counter:

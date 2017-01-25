@@ -43,7 +43,8 @@ def get_wikipedia_summary(page_title:str, n_summary_sentence:int=3):
 
 
 def main(path_extracted_wikipedia_text:str,
-         wikipedia_article_names:List[Tuple[str, str]]):
+         wikipedia_article_names:List[Tuple[str, str]],
+         evaluation_data_wikipedia_article_names:List[Tuple[str, str]]):
     wikipedia.set_lang('ja')
     extracted_summary_text = []
     for article_name in tqdm.tqdm(wikipedia_article_names):
@@ -73,10 +74,25 @@ def main(path_extracted_wikipedia_text:str,
     with open(os.path.join(path_extracted_wikipedia_text, 'wikipedia-full.json'), 'w') as f:
         f.write(json.dumps(extracted_full_text, ensure_ascii=False, indent=4))
 
+    extracted_full_text = []
+    for article_name in tqdm.tqdm(evaluation_data_wikipedia_article_names):
+        text = get_wikipedia_page(article_name[0])
+        wikipedia_text_format = {}
+        wikipedia_text_format["page_title"] = article_name[0]
+        wikipedia_text_format["text"] = text
+        wikipedia_text_format["gold_label"] = article_name[1]
+        if not text is False:
+            extracted_full_text.append(wikipedia_text_format)
+        time.sleep(SLEEP_TIME)
+
+    with open(os.path.join(path_extracted_wikipedia_text, 'wikipedia-evaluation-full.json'), 'w') as f:
+        f.write(json.dumps(extracted_full_text, ensure_ascii=False, indent=4))
+
 
 
 if __name__ == '__main__':
     path_extracted_wikipedia_dir = './wikipedia_data'
+    # sample-keyword.pyでモデルを構築するためのwikipedia文書を取得します。
     training_data_wikipedia_article_names = [
         ### 映画 ###
         ("スター・ウォーズ エピソード4/新たなる希望", "映画"),
@@ -92,6 +108,7 @@ if __name__ == '__main__':
         ("フットルース(1984年の映画)", "映画"),
         ("グラン・トリノ", "映画"),
         ("インディ・ジョーンズ / 魔宮の伝説", "映画"),
+        ("男はつらいよ(映画)", "映画"),
         ### テレビ番組名 ###
         ("世界の果てまでイッテQ!", "テレビ番組"),
         ("日経スペシャル 未来世紀ジパング〜沸騰現場の経済学〜", "テレビ番組"),
@@ -102,6 +119,12 @@ if __name__ == '__main__':
         ("秘密のケンミンSHOW", "テレビ番組"),
         ("和風総本家", "テレビ番組"),
         ("ぴったんこカン・カン", "テレビ番組"),
+        ("アナザースカイ", "テレビ番組"),
+        ("世界の車窓から", "テレビ番組"),
+        ("ぶらり途中下車の旅", "テレビ番組"),
+        ("満天☆青空レストラン", "テレビ番組"),
+        ("ザ!鉄腕!DASH!!", "テレビ番組"),
+        ("金曜ロードSHOW!", "テレビ番組"),
         ### アルコール類 ###
         ("第三のビール", "アルコール"),
         ("ウイスキー", "アルコール"),
@@ -120,8 +143,15 @@ if __name__ == '__main__':
         ("昭和お好み焼き劇場うまいもん横丁", "レストラン"),
         ("立ち食いそば・うどん店", "レストラン"),
         ("ジョナサン (ファミリーレストラン)", "レストラン"),
-        ("バーミヤン (レストランチェーン)", "外食・店舗-レストラン"),
-        ("あきんどスシロー", "レストラン"),
+        ("バーミヤン (レストランチェーン)", "レストラン"),
+        ("すかいらーく", "レストラン"),
+        ("ロイヤルホスト", "レストラン"),
+        ("ハイデイ日高", "レストラン"),
+        ("名代富士そば", "レストラン"),
+        ("阪急そば", "レストラン"),
+        ("餃子の王将", "レストラン"),
+        ("ぎょうざの満洲", "レストラン"),
+        ("ドミノ・ピザ", "レストラン"),
         ### バイク ###
         ("ヤマハ・SR", "バイク"),
         ("ホンダ・アフリカツイン", "バイク"),
@@ -134,6 +164,8 @@ if __name__ == '__main__':
         ("カワサキ・Dトラッカー", "バイク"),
         ("スズキ・バンディット400", "バイク"),
         ("スズキ・GSX1300Rハヤブサ", "バイク"),
+        ("スズキ・アドレス", "バイク"),
+        ("ホンダ・リード", "バイク"),
         ### スマートフォン ###
         ("iPhone 6", "スマートフォン"),
         ("Xperia", "スマートフォン"),
@@ -142,7 +174,11 @@ if __name__ == '__main__':
         ("Google Nexus", "スマートフォン"),
         ("Samsung Galaxy", "スマートフォン"),
         ("AQUOS PHONE", "スマートフォン"),
-        ("ASUS ZenFone", "スマートフォン"),
+        ("HTV32", "スマートフォン"),
+        ("BlackBerry Bold", "スマートフォン"),
+        ("LGV34", "スマートフォン"),
+        ("F1100", "スマートフォン"),
+        ("IS06", "スマートフォン"),
         ### PC ###
         ("VAIO", "パソコン"),
         ("Let'snote", "パソコン"),
@@ -152,24 +188,16 @@ if __name__ == '__main__':
         ("ThinkPad", "パソコン"),
         ("ダイナブック (東芝)", "パソコン"),
         ("Inter Link", "パソコン"),
-        ("Eee PC", "パソコン"),
+        ("カシオペア (コンピュータ)", "パソコン"),
+        ("チャンドラ2", "パソコン"),
+        ("Dell Inspiron", "パソコン"),
+        ("Compaq Portable", "パソコン"),
         ### レジャー施設 ###
         ("ユニバーサル・スタジオ・ジャパン", "レジャー施設"),
         ("志摩スペイン村", "レジャー施設"),
         ("リトルワールド", "レジャー施設"),
         ("スペースワールド", "レジャー施設"),
         ("ムツゴロウ動物王国", "レジャー施設"),
-        ### 鉄道関係 ###
-        ("山手線", "鉄道"),
-        ("新宿駅", "鉄道"),
-        ("中央本線", "鉄道"),
-        ("芸備線", "鉄道"),
-        ("東海道本線", "鉄道"),
-        ("奥羽本線", "鉄道"),
-        ("軌間可変電車", "鉄道"),
-        ("インターシティ", "鉄道"),
-        ("ユーロスター", "鉄道"),
-        ("TGV", "鉄道"),
         ### 教育関係 ###
         ("奈良先端科学技術大学院大学", "教育"),
         ("Z会", "教育"),
@@ -181,5 +209,40 @@ if __name__ == '__main__':
         ("PL学園中学校・高等学校", "教育"),
         ("学習院初等科", "教育"),
     ]
-    main(path_extracted_wikipedia_dir, training_data_wikipedia_article_names)
+
+    # sample_category_classificaion.pyで評価として使うwikipedia文書を用意します。
+    # 基本的に1カテゴリに3文書を用意します。
+    # モデルの強さを見極めるために3つのうち、1つはモデル構築のための文書とは内容が大きくかけはなれた、けど同じカテゴリ、という文書を混入します。
+    evaluation_data_wikipedia_article_names = [
+        ### 映画 ###
+        ("スター・ウォーズ/フォースの覚醒", "映画"),
+        ("タイタニック (1997年の映画)", "映画"),
+        ("おとうと (2010年の映画)", "映画"),
+        ### テレビ番組名 ###
+        ("天才!志村どうぶつ園", "テレビ番組"),
+        ("はいすくーる落書", "テレビ番組"),
+        ("ブリテンズ・ゴット・タレント", "テレビ番組"),
+        ### 外食・店舗 ###
+        ("吉野家", "レストラン"),
+        ("壱番屋", "レストラン"),
+        ("かんだやぶそば", "レストラン"),
+        ### バイク ###
+        ("ホンダ・カブ", "バイク"),
+        ("カワサキ・W", "バイク"),
+        ("鈴鹿8時間耐久ロードレース", "バイク"),
+        ### PC ###
+        ("MacBook Air", "パソコン"),
+        ("リブレット", "パソコン"),
+        ("ぴゅう太", "パソコン"),
+        ### レジャー施設 ###
+        ("生駒山上遊園地", "レジャー施設"),
+        ("ディズニーランド", "レジャー施設"),
+        ("鷲羽山ハイランド", "レジャー施設"),
+        ### 教育関係 ###
+        ("イートン・カレッジ", "教育"),
+        ("東京大学", "教育"),
+        ("国立情報学研究所", "教育"),
+    ]
+
+    main(path_extracted_wikipedia_dir, training_data_wikipedia_article_names, evaluation_data_wikipedia_article_names)
 

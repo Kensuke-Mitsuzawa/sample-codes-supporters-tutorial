@@ -45,6 +45,19 @@ python ./get_wikipedia_text.py
 
 ## 形態素解析
 
+形態素分割を実行するためのサンプルコード、単語集計を実行するためのサンプルコードを保存しています。
+
 `python sample_tokenization.py`
 
+## キーワード抽出 & カテゴリ分類モデル構築
 
+カテゴリラベル情報を利用して、カテゴリごとのキーワード抽出、ついでにカテゴリ分類モデルの構築を実施します。
+
+`python sample_keyword.py`
+
+## カテゴリ分類
+
+構築したモデルを使ってカテゴリ分類を実施します。
+モデルの評価をAccuracyで実施します。
+
+`python sample_category_classification.py`
