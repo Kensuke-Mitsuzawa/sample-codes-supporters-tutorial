@@ -61,3 +61,26 @@ python ./get_wikipedia_text.py
 モデルの評価をAccuracyで実施します。
 
 `python sample_category_classification.py`
+
+
+# Dockerコンテナによる環境設定
+
+いろいろインストールが面倒だ、という方のために環境を整えたDockerfileを用意しています。
+
+## Dockerイメージビルド
+
+```
+docker build -t nlp-sample-codes ./
+```
+
+## Dockerコンテナ起動とログイン
+
+```
+docker run --name nlp-sample-container -i -t nlp-sample-codes
+```
+
+## コンテナにログイン
+
+```
+docker exec -it nlp-sample-container
+```
