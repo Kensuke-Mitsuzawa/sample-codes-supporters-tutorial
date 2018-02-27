@@ -73,8 +73,8 @@ def main(tokenizer_obj:MecabWrapper,
     ### 頻度順にソートするために [(word, 頻度)] の形にする
     seq_word_frequency = [(word, frequency) for word, frequency in dict(word_frequency_obj).items()]
     ### 単語頻度順にソート ###
-    print('Word frequency without label')
-    print(sorted(seq_word_frequency, key=lambda x:x[1], reverse=True))
+    print('Top 100 word frequency without label')
+    print(sorted(seq_word_frequency, key=lambda x:x[1], reverse=True)[:100])
 
     # --------------------------------------------------------------------------------------------------------------#
     # ラベルごとに単語を集計する
@@ -96,13 +96,13 @@ def main(tokenizer_obj:MecabWrapper,
         word_frequency_obj_label = aggregate_words(seq_list_tokens)
         seq_word_frequency_label = [(word, frequency) for word, frequency in dict(word_frequency_obj_label).items()]
         print('*'*30)
-        print('For label = {}'.format(label_name))
-        print(sorted(seq_word_frequency_label, key=lambda x:x[1], reverse=True))
+        print('Top 100 words For label = {}'.format(label_name))
+        print(sorted(seq_word_frequency_label, key=lambda x:x[1], reverse=True)[:100])
 
 
 if __name__ == '__main__':
     ### MecabWrapperを作る ###
-    mecab_obj = MecabWrapper(dictType='neologd', path_mecab_config='/usr/local/bin/')
+    mecab_obj = MecabWrapper(dictType='ipadic')
     ### 取得したい品詞だけを定義する ###
     pos_condition = [('名詞', '固有名詞'), ('動詞', '自立'), ('形容詞', '自立')]
 

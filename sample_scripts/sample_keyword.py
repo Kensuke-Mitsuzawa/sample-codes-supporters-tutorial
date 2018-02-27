@@ -167,7 +167,7 @@ def main(tokenizer_obj:MecabWrapper,
 
 if __name__ == '__main__':
     ### MecabWrapperを作る ###
-    mecab_obj = MecabWrapper(dictType='neologd', path_mecab_config='/usr/local/bin/')
+    mecab_obj = MecabWrapper(dictType='ipadic', path_mecab_config='/usr/local/bin/')
     ### 取得したい品詞だけを定義する ###
     pos_condition = [('名詞', '固有名詞'), ('動詞', '自立'), ('形容詞', '自立')]
 
